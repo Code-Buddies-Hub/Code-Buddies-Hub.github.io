@@ -1,5 +1,5 @@
 ## Hi there 👋
-img src="https://prnt.sc/diPOWtMi8Xbh" alt=lossUTP width=1000
+## img src="https://prnt.sc/diPOWtMi8Xbh" alt=lossUTP width=1000
 <!--
 **Code-Buddies-Hub/Code-Buddies-Hub** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
