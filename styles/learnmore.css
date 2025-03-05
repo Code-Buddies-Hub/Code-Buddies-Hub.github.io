@@ -1,0 +1,399 @@
+/* CSS Variables */
+:root {
+    --primary-color: #3498db;
+    --primary-dark: #2980b9;
+    --secondary-color: #2c3e50;
+    --accent-color: #2ecc71;
+    --text-color: #333333;
+    --light-bg: #f5f7fa;
+    --border-color: #e0e0e0;
+}
+
+/* Body Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4efe9 100%);
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+}
+
+/* Story Section Styles */
+.story-section {
+    max-width: 1200px;
+    margin: 4rem auto;
+    padding: 0 2rem;
+}
+
+.story-section h1 {
+    font-size: 3.5em;
+    color: var(--secondary-color);
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.story-section h1::after {
+    content: '';
+    display: block;
+    width: 120px;
+    height: 4px;
+    background: linear-gradient(90deg, #2c3e50, #3498db, #2ecc71);
+    margin: 1.5rem auto;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    animation: gradientShift 3s ease infinite;
+    background-size: 200% 200%;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Origin Story Section */
+.origin-story {
+    background: linear-gradient(to bottom right, #ffffff, #f8f9fa);
+    padding: 3.5rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    margin-bottom: 4rem;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.origin-story:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+}
+
+.origin-story h2 {
+    color: var(--primary-color);
+    font-size: 2.2em;
+    margin-bottom: 1.8rem;
+    position: relative;
+    display: inline-block;
+}
+
+.origin-story h2::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    border-radius: 2px;
+    animation: gradientShift 3s ease infinite;
+    background-size: 200% 200%;
+}
+
+.origin-story p {
+    font-size: 1.25em;
+    line-height: 1.8;
+    color: var(--text-color);
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
+}
+
+/* Mission & Vision Section */
+.mission-vision {
+    background: #1a2634;
+    color: #ffffff;
+    padding: 3.5rem;
+    border-radius: 20px;
+    margin-bottom: 4rem;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.mission-vision::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(255,255,255,0.05) 25%, transparent 25%);
+    background-size: 3em 3em;
+    opacity: 0.1;
+}
+
+.mission-vision h2 {
+    font-size: 2.2em;
+    margin-bottom: 1.8rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.mission-vision ul {
+    list-style: none;
+    padding: 0;
+    margin: 2.5rem 0;
+}
+
+.mission-vision li {
+    font-size: 1.25em;
+    margin-bottom: 1.2rem;
+    padding-left: 2.5rem;
+    position: relative;
+    transition: transform 0.2s ease;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    color: #ffffff;
+}
+
+.mission-vision li:hover {
+    transform: translateX(10px);
+    color: #e6e6e6;
+}
+
+.mission-vision li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent-color);
+    font-weight: bold;
+    transition: transform 0.2s ease;
+}
+
+/* Team Section */
+.team-section {
+    margin-bottom: 4rem;
+}
+
+.team-section h2 {
+    color: var(--secondary-color);
+    font-size: 2.2em;
+    text-align: center;
+    margin-bottom: 3rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.team-members {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2.5rem;
+    margin-top: 2.5rem;
+}
+
+.team-member {
+    background: linear-gradient(to bottom right, #ffffff, #f8f9fa);
+    padding: 2.5rem 2rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.team-member:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+}
+
+.team-member h3 {
+    color: var(--primary-color);
+    font-size: 1.6em;
+    margin-bottom: 0.8rem;
+    position: relative;
+    display: inline-block;
+    line-height: 1.3;
+    padding: 0 0.5rem;
+    word-wrap: break-word;
+    hyphens: auto;
+}
+
+.team-member h3::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    border-radius: 2px;
+    animation: gradientShift 3s ease infinite;
+    background-size: 200% 200%;
+}
+
+.team-member p:first-of-type {
+    color: var(--secondary-color);
+    font-weight: 600;
+    margin: 1.2rem 0;
+    font-size: 1.1em;
+}
+
+/* Join Section */
+.join-section {
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.05), rgba(46, 204, 113, 0.05));
+    padding: 4rem;
+    border-radius: 20px;
+    text-align: center;
+    margin: 5rem 0;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
+}
+
+.join-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.05) 25%, transparent 25%);
+    background-size: 4em 4em;
+    opacity: 0.5;
+}
+
+.join-section h2 {
+    color: var(--secondary-color);
+    font-size: 2.2em;
+    margin-bottom: 1.8rem;
+    position: relative;
+    z-index: 1;
+}
+
+.join-section p {
+    font-size: 1.25em;
+    line-height: 1.7;
+    max-width: 800px;
+    margin: 0 auto 2.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    margin-top: 2rem;
+}
+
+.cta-buttons a {
+    padding: 1.2rem 2.8rem;
+    font-size: 1.3em;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-buttons a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(-100%) rotate(45deg);
+    transition: transform 0.6s ease;
+}
+
+.cta-buttons a:hover::before {
+    transform: translateX(100%) rotate(45deg);
+}
+
+.cta-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    border: none;
+}
+
+.cta-primary:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(52, 152, 219, 0.4);
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+}
+
+.cta-secondary {
+    background: white;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.cta-secondary:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+    background: #f8f9fa;
+    color: var(--primary-dark);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .story-section {
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+
+    .story-section h1 {
+        font-size: 2.8em;
+    }
+
+    .origin-story,
+    .mission-vision,
+    .join-section {
+        padding: 2.5rem;
+    }
+
+    .team-members {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .team-member {
+        padding: 2rem;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .cta-buttons a {
+        width: 100%;
+    }
+}
+
+/* Animations */
+.origin-story,
+.mission-vision,
+.team-member,
+.join-section {
+    animation: fadeIn 1s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+} 

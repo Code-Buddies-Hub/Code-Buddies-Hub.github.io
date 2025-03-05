@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contact Code Buddies Hub - Get in touch with us for privacy concerns or general inquiries">
+    <meta name="robots" content="index, follow">
+    <title>Contact Us - Code Buddies Hub</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/contact.css">
+</head>
+<body>
+    <div class="container">
+        <main class="story-section">
+            <h1>Contact Us</h1>
+            
+            <div class="success-message" id="successMessage">
+                Thank you for your message! We'll get back to you soon.
+            </div>
+
+            <section class="form-section">
+                <h2>Get In Touch</h2>
+                <div class="form-info">
+                    <p>Have a question or concern? We're here to help! Fill out the form below and we'll respond as soon as possible.</p>
+                </div>
+
+                <form id="contactForm" action="/submit-form" method="POST">
+                    <div class="form-group">
+                        <label for="inquiryType">How can we help?<span class="required">*</span></label>
+                        <select id="inquiryType" name="inquiryType" required>
+                            <option value="">Please select a topic...</option>
+                            <option value="privacy">Privacy Concern</option>
+                            <option value="data-request">Data Access Request</option>
+                            <option value="delete-data">Data Deletion Request</option>
+                            <option value="general">General Inquiry</option>
+                            <option value="bug">Report a Bug</option>
+                            <option value="feedback">Feedback</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name">Full Name<span class="required">*</span></label>
+                        <input type="text" id="name" name="name" required 
+                               placeholder="Enter your full name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address<span class="required">*</span></label>
+                        <input type="email" id="email" name="email" required 
+                               placeholder="Enter your email address">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Message<span class="required">*</span></label>
+                        <textarea id="message" name="message" required 
+                                  placeholder="Please describe your concern or request in detail..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="accountEmail">Your Code Buddies Hub Account Email (if applicable)</label>
+                        <input type="email" id="accountEmail" name="accountEmail" 
+                               placeholder="Enter your account email if you have one">
+                    </div>
+
+                    <div class="privacy-notice">
+                        <p>By submitting this form, you acknowledge that the information provided will be handled in accordance with our <a href="privacy-policy.html">Privacy Policy</a>. We'll only use your information to respond to your inquiry.</p>
+                    </div>
+
+                    <button type="submit" class="submit-button">Send Message</button>
+                </form>
+            </section>
+
+            <section class="contact-info-section">
+                <h2>Other Ways to Reach Us</h2>
+                <div class="contact-info">
+                    <p>If you have any questions, concerns, or requests related to this Privacy Policy or our privacy practices, please contact us:</p>
+                    <ul>
+                        <li>Email: <a href="mailto:odebuddieshub@gmail.com">odebuddieshub@gmail.com</a></li>
+                        <li>Website: <a href="contact.html">Contact Form</a></li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <nav class="footer-links" aria-label="Footer Navigation">
+                        <a href="index.html">Home</a>
+                        <a href="privacy-policy.html">Privacy Policy</a>
+                        <a href="terms-of-service.html">Terms of Service</a>
+                    </nav>
+                    <div id="copyright-container" data-year="2024"></div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show success message
+            const successMessage = document.getElementById('successMessage');
+            successMessage.style.display = 'block';
+            
+            // Scroll to success message
+            successMessage.scrollIntoView({ behavior: 'smooth' });
+            
+            // Reset form
+            this.reset();
+            
+            // Hide success message after 5 seconds
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 5000);
+        });
+    </script>
+</body>
+</html> 
