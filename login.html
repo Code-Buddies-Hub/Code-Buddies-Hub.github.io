@@ -3,36 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Login to Code Buddies Hub">
+    <meta name="description" content="Log in to Code Buddies Hub - Access your account to connect with developers, collaborate on projects, and enhance your coding skills.">
+    <meta name="keywords" content="code buddies login, developer community login, coding collaboration account">
     <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Log In - Code Buddies Hub">
+    <meta property="og:description" content="Access your Code Buddies Hub account to connect with peers, collaborate on projects, and enhance your coding skills.">
+    <meta property="og:type" content="website">
     <title>Login - Code Buddies Hub</title>
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Sign-In Library -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
     <div class="container">
-        <main class="login-section">
-            <h1>Login</h1>
-            <section class="form-section">
-                <div class="form-info">
-                    <p>Please enter your email and password to log in.</p>
+        <div class="home-button">
+            <a href="index.html" class="cta-secondary"><i class="fas fa-home"></i> Back to Home</a>
+        </div>
+
+        <main class="login-container">
+            <section class="login-section">
+                <div class="login-header">
+                    <h1><i class="fas fa-code"></i> Code Buddies Hub</h1>
+                    <p class="subtitle">Connect, Code, Create</p>
                 </div>
-
-                <form id="loginForm" action="/login" method="POST">
-                    <div class="form-group">
-                        <label for="email">Email Address<span class="required">*</span></label>
-                        <input type="email" id="email" name="email" required 
-                               placeholder="Enter your email address">
+                
+                <div class="form-container">
+                    <div class="tabs">
+                        <button class="tab-btn active" id="loginTab">Log In</button>
+                        <button class="tab-btn" id="signupTab">Sign Up</button>
                     </div>
-
-                    <div class="form-group">
-                        <label for="password">Password<span class="required">*</span></label>
-                        <input type="password" id="password" name="password" required 
-                               placeholder="Enter your password">
-                    </div>
-
-                    <button type="submit" class="submit-button">Login</button>
-                </form>
+                    
+                    <!-- Login Form -->
+                    <form id="loginForm" class="auth-form active">
+                        <h2>Welcome Back!</h2>
+                        <p class="form-subtitle">Log in to continue your coding journey</p>
+                        
+                        <div class="form-group">
+                            <label for="loginEmail">Email</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-envelope"></i>
+                                <input type="email" id="loginEmail" name="email" required placeholder="Enter your email">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="loginPassword">Password</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="loginPassword" name="password" required placeholder="Enter your password">
+                            </div>
+                        </div>
+                        
+                        <div class="form-options">
+                            <div class="remember-me">
+                                <input type="checkbox" id="rememberMe" name="rememberMe">
+                                <label for="rememberMe">Remember me</label>
+                            </div>
+                            <a href="#" class="forgot-password">Forgot Password?</a>
+                        </div>
+                        
+                        <button type="submit" class="auth-button">Log In</button>
+                        
+                        <div class="social-login">
+                            <p>Or log in with:</p>
+                            <div class="social-buttons">
+                                <button type="button" class="social-btn github">
+                                    <i class="fab fa-github"></i> GitHub
+                                </button>
+                                <button type="button" class="social-btn google">
+                                    <i class="fab fa-google"></i> Google
+                                </button>
+                            </div>
+                            <!-- Google Sign-In button -->
+                            <div id="googleSignInDiv" class="google-signin-button"></div>
+                        </div>
+                    </form>
+                    
+                    <!-- Sign Up Form -->
+                    <form id="signupForm" class="auth-form">
+                        <h2>Join Our Community</h2>
+                        <p class="form-subtitle">Create an account to start collaborating</p>
+                        
+                        <div class="form-group">
+                            <label for="signupName">Full Name</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-user"></i>
+                                <input type="text" id="signupName" name="name" required placeholder="Enter your full name">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="signupEmail">Email</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-envelope"></i>
+                                <input type="email" id="signupEmail" name="email" required placeholder="Enter your email">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="signupPassword">Password</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="signupPassword" name="password" required placeholder="Create a password">
+                                <div class="password-strength" id="passwordStrength"></div>
+                            </div>
+                            <div class="password-requirements">
+                                <p>Password must contain:</p>
+                                <ul>
+                                    <li id="length">At least 8 characters</li>
+                                    <li id="uppercase">At least 1 uppercase letter</li>
+                                    <li id="lowercase">At least 1 lowercase letter</li>
+                                    <li id="number">At least 1 number</li>
+                                    <li id="special">At least 1 special character</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password">
+                            </div>
+                        </div>
+                        
+                        <div class="form-options">
+                            <div class="terms-agreement">
+                                <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
+                                <label for="agreeTerms">I agree to the <a href="terms-of-service.html">Terms of Service</a> and <a href="privacy-policy.html">Privacy Policy</a></label>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="auth-button">Create Account</button>
+                    </form>
+                </div>
+            </section>
+            
+            <section class="login-benefits">
+                <div class="benefits-content">
+                    <h2>Why Join Code Buddies Hub?</h2>
+                    <ul class="benefits-list">
+                        <li>
+                            <i class="fas fa-users"></i>
+                            <div>
+                                <h3>Connect with Developers</h3>
+                                <p>Join a diverse community of passionate developers from around the world.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-code-branch"></i>
+                            <div>
+                                <h3>Collaborate on Projects</h3>
+                                <p>Find partners for your coding projects and participate in code reviews.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-graduation-cap"></i>
+                            <div>
+                                <h3>Grow Your Skills</h3>
+                                <p>Accelerate your learning through peer programming and mentorship.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-laptop-code"></i>
+                            <div>
+                                <h3>Build Your Portfolio</h3>
+                                <p>Work on real-world projects that showcase your skills to potential employers.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </section>
         </main>
     </div>
@@ -40,6 +182,7 @@
     <footer class="footer">
         <div class="footer-content">
             <nav class="footer-links" aria-label="Footer Navigation">
+                <a href="index.html">Home</a>
                 <a href="privacy-policy.html">Privacy Policy</a>
                 <a href="terms-of-service.html">Terms of Service</a>
                 <a href="contact.html">Contact Us</a>
@@ -48,5 +191,21 @@
         </div>
     </footer>
 
+    <script src="scripts/login.js"></script>
+    <script>
+        // Initialize Google Sign-In
+        window.onload = function() {
+            google.accounts.id.initialize({
+                client_id: '1074044642609-qg1870pe9daatfkj06v02nt2sfb1ncrt.apps.googleusercontent.com',
+                callback: handleGoogleSignIn,
+                auto_select: false
+            });
+            
+            google.accounts.id.renderButton(
+                document.getElementById('googleSignInDiv'),
+                { theme: 'outline', size: 'large' }
+            );
+        };
+    </script>
 </body>
-</html> 
+</html>
