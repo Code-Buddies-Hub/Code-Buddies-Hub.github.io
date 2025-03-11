@@ -1,25 +1,5 @@
-:root {
-    --primary-color: #3498db;
-    --primary-dark: #2980b9;
-    --secondary-color: #2c3e50;
-    --accent-color: #2ecc71;
-    --text-color: #333;
-    --light-bg: #f8f9fa;
-    --border-color: #e1e8ed;
-    --success-color: #2ecc71;
-    --warning-color: #f1c40f;
-}
+/* Removed redundant :root variables and common styles already in main.css */
 
-body {
-    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
-    background-attachment: fixed;
-}
-
-main {
-    padding: 1rem 0 3rem;
-}
-
-/* Hero Section */
 .welcome-section {
     background: linear-gradient(135deg, #2c3e50, #3498db);
     color: white;
@@ -248,8 +228,6 @@ main {
 
 .feature-card p {
     color: #666;
-    line-height: 1.7;
-    font-size: 1.1rem;
 }
 
 /* Benefits Section */

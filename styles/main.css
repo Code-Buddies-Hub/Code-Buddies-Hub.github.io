@@ -1,9 +1,4 @@
 /* Global Styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
 
 :root {
     --primary-color: #3498db;
@@ -21,6 +16,8 @@ body {
     color: #333;
     background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
     background-attachment: fixed;
+    margin: 0;
+    padding: 0;
 }
 
 .container {
@@ -36,6 +33,9 @@ body {
     color: white;
     padding: 2rem 0;
     margin-top: 3rem;
+    width: 100%;
+    position: relative;
+    bottom: auto;
 }
 
 .footer-content {
