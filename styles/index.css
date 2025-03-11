@@ -91,7 +91,7 @@
 }
 
 .hero-cta .cta-primary:hover {
-    background: #27ae60;
+    background: #27ae5f;
 }
 
 .hero-cta .cta-secondary {
@@ -462,4 +462,12 @@
     .join-section {
         padding: 2rem 1.5rem;
     }
-} 
+}
+
+.login-button {
+    text-align: right;
+    margin-right: 20px;
+}
+
+
+
