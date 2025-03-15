@@ -1,4 +1,4 @@
-var socket = io.connect("https://testing-ip-vpq3.onrender.com");  
+var socket = io.connect("http://79.161.71.139:5000");  
 var username = localStorage.getItem("username"); 
 
 if (username) {
