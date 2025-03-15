@@ -7,7 +7,7 @@ import time
 from database import init_db, get_db_connection  # Importere funksjonene fra database.py
 
 app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, cors_allowed_origins=["https://code-buddies-hub.github.io", "http://79.161.71.139:5000", "*"])
 
 # Opprett mappe for bilder hvis den ikke finnes
 UPLOAD_FOLDER = "static/bilder"
@@ -111,4 +111,13 @@ def handle_disconnect():
         print(f"Ukjent bruker koblet fra: {request.sid}")
 
 if __name__ == "__main__":
-    socketio.run(app, host="0.0.0.0", port=5000, debug=True)
+    # For development
+    # socketio.run(app, host="0.0.0.0", port=5000, debug=True)
+    
+    # For production with SSL/HTTPS
+    import ssl
+    context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+    # You'll need to create or obtain SSL certificates
+    # Replace with the path to your certificate and key files
+    context.load_cert_chain('cert.pem', 'key.pem')
+    socketio.run(app, host="0.0.0.0", port=5000, ssl_context=context, debug=False)

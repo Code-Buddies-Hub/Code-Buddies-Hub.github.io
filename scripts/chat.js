@@ -1,4 +1,7 @@
-var socket = io.connect("http://79.161.71.139:5000");  
+var socket = io.connect("https://79.161.71.139:5000", {
+    transports: ['websocket'],
+    rejectUnauthorized: false
+});  
 var username = localStorage.getItem("username"); 
 
 if (username) {
