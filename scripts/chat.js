@@ -1,7 +1,4 @@
-var socket = io.connect("https://79.161.71.139:5000", {
-    transports: ['websocket'],
-    rejectUnauthorized: false
-});  
+var socket = io.connect("https://testing-ip-vpq3.onrender.com");  
 var username = localStorage.getItem("username"); 
 
 if (username) {
