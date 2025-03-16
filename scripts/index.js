@@ -1,3 +1,9 @@
+fetch("http://192.168.86.42:5000/api/data")
+.then(response => response.json())
+.then(data => console.log(data))
+.catch(error => console.error("Error:", error));
+
+
  /**
  * Code Buddies Hub - Homepage JavaScript
  * Handles authentication state and UI updates for the homepage
