@@ -8,9 +8,31 @@
     <title>Contact Us - Code Buddies Hub</title>
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/contact.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
+        <!-- Navigation with user profile -->
+        <div class="nav-container">
+            <div class="home-button">
+                <a href="index.html" class="cta-secondary"><i class="fas fa-home"></i> Back to Home</a>
+            </div>
+            
+            <!-- Login button for guests -->
+            <div class="login-button guest-only">
+                <a href="login.html" class="cta-primary"><i class="fas fa-sign-in-alt"></i> Log In</a>
+            </div>
+            
+            <!-- User profile for logged-in users -->
+            <div class="user-profile-container auth-required" style="display: none;">
+                <div class="user-welcome">
+                    Welcome, <span class="user-profile" data-field="name">User</span>!
+                    <img class="user-profile profile-picture" src="" alt="Profile picture" style="width: 30px; height: 30px; border-radius: 50%; margin-left: 10px;">
+                </div>
+                <button class="logout-button cta-secondary"><i class="fas fa-sign-out-alt"></i> Log Out</button>
+            </div>
+        </div>
+
         <main class="story-section">
             <h1>Contact Us</h1>
             
@@ -84,6 +106,8 @@
         </div>
     </footer>
 
+    <!-- Add auth.js before contact.js -->
+    <script src="scripts/auth.js"></script>
     <script src="scripts/contact.js"></script>
 </body>
-</html> 
+</html>

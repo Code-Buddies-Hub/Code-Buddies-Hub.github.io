@@ -17,8 +17,17 @@
 </head>
 <body>
     <div class="container">
-        <div class="login-button">
-            <a href="login.html" class="cta-primary"><i class="fas fa-paper-plane"></i> Log In</a>
+        <!-- Login/Logout buttons that will be controlled by auth.js -->
+        <div class="login-button guest-only">
+            <a href="login.html" class="cta-primary"><i class="fas fa-sign-in-alt"></i> Log In</a>
+        </div>
+        
+        <div class="user-profile-container auth-required" style="display: none;">
+            <div class="user-welcome">
+                Welcome, <span class="user-profile" data-field="name">User</span>!
+                <img class="user-profile profile-picture" src="" alt="Profile picture" style="width: 30px; height: 30px; border-radius: 50%; margin-left: 10px;">
+            </div>
+            <button class="logout-button cta-secondary"><i class="fas fa-sign-out-alt"></i> Log Out</button>
         </div>
 
         <main>
@@ -30,7 +39,8 @@
                 </div>
             </section>
             
-            <section class="features-section">
+            <!-- Content for guests only -->
+            <section class="features-section guest-only">
                 <h2><i class="fas fa-star"></i> What We Offer</h2>
                 <div class="features" aria-label="Key Features">
                     <article class="feature-card">
@@ -48,6 +58,37 @@
                         <h3>Grow Your Skills</h3>
                         <p>Accelerate your learning through peer programming, mentorship opportunities, and community-driven knowledge sharing.</p>
                     </article>
+                </div>
+            </section>
+
+            <!-- Content for logged-in users -->
+            <section class="dashboard-section auth-required" style="display: none;">
+                <h2><i class="fas fa-tachometer-alt"></i> Your Dashboard</h2>
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <div class="dashboard-icon"><i class="fas fa-comments"></i></div>
+                        <h3>Chat Room</h3>
+                        <p>Connect with other developers in real-time.</p>
+                        <a href="chat.html" class="dashboard-link">Enter Chat <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="dashboard-icon"><i class="fas fa-user-friends"></i></div>
+                        <h3>Find Partners</h3>
+                        <p>Connect with developers for your next project.</p>
+                        <a href="#" class="dashboard-link">Find Partners <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="dashboard-icon"><i class="fas fa-code"></i></div>
+                        <h3>Projects</h3>
+                        <p>View and manage your collaborative projects.</p>
+                        <a href="#" class="dashboard-link">View Projects <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="dashboard-icon"><i class="fas fa-user-cog"></i></div>
+                        <h3>Profile Settings</h3>
+                        <p>Update your profile and preferences.</p>
+                        <a href="#" class="dashboard-link">Edit Profile <i class="fas fa-arrow-right"></i></a>
+                    </div>
                 </div>
             </section>
 
@@ -77,14 +118,32 @@
                 </div>
             </section>
 
-            <section class="join-section">
+            <!-- Different CTA section for guests vs logged-in users -->
+            <section class="join-section guest-only">
                 <h2><i class="fas fa-sign-in-alt"></i> Ready to Join?</h2>
                 <p>Have questions or want to join our community? We're here to help!</p>
                 <p>Contact us at: <a href="mailto:odebuddieshub@gmail.com"><i class="fas fa-envelope"></i> odebuddieshub@gmail.com</a></p>
                 <div class="cta-buttons">
                     <a href="contact.html" class="cta-primary"><i class="fas fa-paper-plane"></i> Get Started</a>
                     <a href="more.html" class="cta-secondary"><i class="fas fa-book"></i> Learn More</a>
-                    <a href="chat.html" class="cta-secondary"><i class="fas fa-sign-in-alt"></i> Log In</a>
+                    <a href="login.html" class="cta-secondary"><i class="fas fa-sign-in-alt"></i> Log In</a>
+                </div>
+            </section>
+            
+            <section class="community-section auth-required" style="display: none;">
+                <h2><i class="fas fa-users"></i> Community Highlights</h2>
+                <p>Check out what's happening in our community:</p>
+                <div class="community-highlights">
+                    <div class="highlight-card">
+                        <h4>Latest Projects</h4>
+                        <p>Explore the newest projects our members are working on.</p>
+                        <a href="#" class="highlight-link">View Projects</a>
+                    </div>
+                    <div class="highlight-card">
+                        <h4>Upcoming Events</h4>
+                        <p>Join our virtual meetups, workshops, and coding sessions.</p>
+                        <a href="#" class="highlight-link">See Calendar</a>
+                    </div>
                 </div>
             </section>
         </main>
@@ -101,6 +160,8 @@
         </div>
     </footer>
 
+    <!-- Add auth.js before index.js -->
+    <script src="scripts/auth.js"></script>
     <script src="scripts/index.js"></script>
 </body>
 </html>

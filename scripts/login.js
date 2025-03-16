@@ -80,25 +80,55 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginFormElement = document.getElementById('loginForm');
     const signupFormElement = document.getElementById('signupForm');
     
-    loginFormElement.addEventListener('submit', function(e) {
+    // Replace with your WAMP server's IP address
+    const API_BASE_URL = 'http://192.168.86.42/code-buddies-api/api';
+    
+    loginFormElement.addEventListener('submit', async function(e) {
         e.preventDefault();
         
         const email = document.getElementById('loginEmail').value;
         const password = document.getElementById('loginPassword').value;
+        const rememberMe = document.getElementById('rememberMe').checked;
         
-        // Here you would typically send the login data to your server
-        // For now, we'll just simulate a successful login
+        // Disable form while processing
+        const submitButton = this.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+        submitButton.textContent = 'Logging in...';
         
-        console.log('Login attempt:', { email });
-        
-        // Simulate successful login
-        alert('Login successful! Redirecting to dashboard...');
-        
-        // Redirect to index or dashboard page
-        // window.location.href = 'index.html';
+        try {
+            const response = await fetch(`${API_BASE_URL}/login.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+            
+            const data = await response.json();
+            
+            if (response.ok) {
+                // Store auth token and user data
+                const storage = rememberMe ? localStorage : sessionStorage;
+                storage.setItem('authToken', data.token);
+                storage.setItem('user', JSON.stringify(data.user));
+                storage.setItem('tokenExpiry', data.expires_at);
+                
+                alert('Login successful! Redirecting to dashboard...');
+                window.location.href = 'index.html';
+            } else {
+                alert(`Login failed: ${data.message}`);
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            alert('An error occurred during login. Please try again.');
+        } finally {
+            // Re-enable form
+            submitButton.disabled = false;
+            submitButton.textContent = 'Log In';
+        }
     });
     
-    signupFormElement.addEventListener('submit', function(e) {
+    signupFormElement.addEventListener('submit', async function(e) {
         e.preventDefault();
         
         const name = document.getElementById('signupName').value;
@@ -131,16 +161,41 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        // Here you would typically send the signup data to your server
-        // For now, we'll just simulate a successful signup
+        // Disable form while processing
+        const submitButton = this.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+        submitButton.textContent = 'Creating account...';
         
-        console.log('Signup attempt:', { name, email });
-        
-        // Simulate successful signup
-        alert('Account created successfully! You can now log in.');
-        
-        // Switch to login tab
-        loginTab.click();
+        try {
+            const response = await fetch(`${API_BASE_URL}/register.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, email, password })
+            });
+            
+            const data = await response.json();
+            
+            if (response.ok) {
+                alert('Account created successfully! You can now log in.');
+                
+                // Clear form fields
+                this.reset();
+                
+                // Switch to login tab
+                document.getElementById('loginTab').click();
+            } else {
+                alert(`Registration failed: ${data.message}`);
+            }
+        } catch (error) {
+            console.error('Registration error:', error);
+            alert('An error occurred during registration. Please try again.');
+        } finally {
+            // Re-enable form
+            submitButton.disabled = false;
+            submitButton.textContent = 'Create Account';
+        }
     });
     
     // Social login buttons
@@ -167,6 +222,40 @@ document.addEventListener('DOMContentLoaded', function() {
         const currentYear = new Date().getFullYear();
         copyrightContainer.setAttribute('data-year', currentYear);
     }
+    
+    // Check if user is already logged in
+    function checkLoggedInStatus() {
+        const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+        
+        if (token) {
+            // Verify token with the backend
+            fetch(`${API_BASE_URL}/verify_token.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ token })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.user) {
+                    // User is already logged in, redirect to index
+                    window.location.href = 'index.html';
+                }
+            })
+            .catch(error => {
+                console.error('Token verification error:', error);
+                // Clear invalid tokens
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('user');
+                sessionStorage.removeItem('authToken');
+                sessionStorage.removeItem('user');
+            });
+        }
+    }
+    
+    // Check if user is already logged in when page loads
+    checkLoggedInStatus();
 });
 
 // Google Sign-In functions
@@ -174,28 +263,38 @@ function handleGoogleSignIn(response) {
     // Get the ID token from the response
     const idToken = response.credential;
     
-    // Parse the JWT token to get user information
-    const payload = parseJwt(idToken);
+    // API base URL - replace with your WAMP server's IP
+    const API_BASE_URL = 'http://YOUR_WAMP_SERVER_IP/code-buddies-api/api';
     
-    console.log('Google Sign-In successful:', payload);
-    
-    // Store user information in localStorage or sessionStorage
-    localStorage.setItem('user', JSON.stringify({
-        name: payload.name,
-        email: payload.email,
-        picture: payload.picture,
-        sub: payload.sub, // Google's unique identifier for the user
-        token: idToken
-    }));
-    
-    // Show success message
-    alert(`Welcome, ${payload.name}! You've successfully signed in with Google.`);
-    
-    // Redirect to index or dashboard page
-    window.location.href = 'index.html';
+    // Send token to your backend
+    fetch(`${API_BASE_URL}/google_auth.php`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ token: idToken })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.token) {
+            // Store auth token and user data
+            localStorage.setItem('authToken', data.token);
+            localStorage.setItem('user', JSON.stringify(data.user));
+            localStorage.setItem('tokenExpiry', data.expires_at);
+            
+            alert(`Welcome, ${data.user.name}! You've successfully signed in with Google.`);
+            window.location.href = 'index.html';
+        } else {
+            alert(`Google Sign-In failed: ${data.message}`);
+        }
+    })
+    .catch(error => {
+        console.error('Google auth error:', error);
+        alert('An error occurred during Google authentication. Please try again.');
+    });
 }
 
-// Function to parse JWT token
+// Function to parse JWT token (kept for reference)
 function parseJwt(token) {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');

@@ -1,113 +1,204 @@
 <!DOCTYPE html>
-<html lang="no">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat</title>
-    <link rel="stylesheet" href="../styles/main.css">
-    <link rel="stylesheet" href="../styles/chat.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script> 
-    <script src="scripts/chat.js"></script>
+    <title>Chat - Code Buddies Hub</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/chat.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script>
 </head>
 <body>
-    <div class="chat-container">
-        <h1>Sigma test 160</h1>
-
-        <div class="login-section">
-            <h2>Logg inn</h2>
-            <div class="message-input-container">
-                <input type="text" id="username" placeholder="Skriv inn brukernavn">
-                <button onclick="registerUser()">Lag session_ID</button>
+    <div class="container">
+        <!-- Navigation with user profile -->
+        <div class="nav-container">
+            <div class="home-button">
+                <a href="index.html" class="cta-secondary"><i class="fas fa-home"></i> Back to Home</a>
+            </div>
+            
+            <div class="user-profile-container auth-required" style="display: none;">
+                <div class="user-welcome">
+                    <span class="user-profile" data-field="name">User</span>
+                    <img class="user-profile profile-picture" src="" alt="Profile picture" style="width: 30px; height: 30px; border-radius: 50%; margin-left: 10px;">
+                </div>
+                <button class="logout-button cta-secondary"><i class="fas fa-sign-out-alt"></i> Log Out</button>
             </div>
         </div>
 
-        <hr>
-
-        <div class="chat-section">
-            <h2>Chat</h2>
-            <div class="message-input-container">
-                <input type="text" id="receiver" placeholder="Send melding til">
-                <input type="text" id="message" placeholder="Skriv en melding...">
-                <button onclick="sendMessage()">Send</button>
-            </div>
-
-            <h3>Meldinger:</h3>
-            <div id="chat"></div>
+        <!-- Auth required message for guests -->
+        <div class="auth-message guest-only">
+            <h2><i class="fas fa-lock"></i> Authentication Required</h2>
+            <p>You need to be logged in to access the chat feature.</p>
+            <a href="login.html" class="cta-primary"><i class="fas fa-sign-in-alt"></i> Log In</a>
         </div>
 
-        <hr>
+        <!-- Chat interface (only visible to authenticated users) -->
+        <div class="chat-container auth-required" style="display: none;">
+            <h1><i class="fas fa-comments"></i> Code Buddies Chat</h1>
 
-        <div class="image-section">
-            <h2>Send bilde</h2>
-            <div class="message-input-container">
-                <input type="file" id="imageInput" accept="image/*">
-                <button onclick="sendImage()">Send bilde</button>
+            <div class="chat-section">
+                <h2>Chat Room</h2>
+                <div class="message-input-container">
+                    <input type="text" id="receiver" placeholder="Send message to">
+                    <input type="text" id="message" placeholder="Type a message...">
+                    <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i> Send</button>
+                </div>
+
+                <h3>Messages:</h3>
+                <div id="chat" class="chat-messages"></div>
+            </div>
+
+            <hr>
+
+            <div class="image-section">
+                <h2>Send Image</h2>
+                <div class="message-input-container">
+                    <input type="file" id="imageInput" accept="image/*">
+                    <button onclick="sendImage()"><i class="fas fa-image"></i> Send Image</button>
+                </div>
             </div>
         </div>
     </div>
 
+    <footer class="footer">
+        <div class="footer-content">
+            <nav class="footer-links" aria-label="Footer Navigation">
+                <a href="index.html">Home</a>
+                <a href="privacy-policy.html">Privacy Policy</a>
+                <a href="terms-of-service.html">Terms of Service</a>
+                <a href="contact.html">Contact Us</a>
+            </nav>
+            <div id="copyright-container" data-year="2025"></div>
+        </div>
+    </footer>
+
+    <!-- Include auth.js first -->
+    <script src="scripts/auth.js"></script>
     <script>
-        var socket = io.connect("https://testing-ip-vpq3.onrender.com");  
-        var username = localStorage.getItem("username"); 
-
-        if (username) {
-            socket.emit("register", { "username": username }); 
-            console.log("Gjenopptok session for:", username);
-            document.getElementById("username").value = username;  
-        }
-
-        function registerUser() {
-            username = document.getElementById("username").value.trim();
-            if (username === "") {
-                alert("Vennligst skriv inn et brukernavn.");
+        // Only initialize chat if user is authenticated
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            if (!isLoggedIn()) {
+                // User is not logged in, they will see the auth-message
                 return;
             }
-            localStorage.setItem("username", username); 
+            
+            // Initialize chat for authenticated users
+            initializeChat();
+        });
+        
+        function initializeChat() {
+            var socket = io.connect("https://testing-ip-vpq3.onrender.com");
+            var user = getCurrentUser();
+            
+            // Use authenticated user's name instead of manual username
+            var username = user.name;
+            
+            // Register user with socket server
             socket.emit("register", { "username": username });
-            alert("Registrert som " + username);
-        }
-
-        function sendMessage() {
-            var receiver = document.getElementById("receiver").value.trim();
-            var message = document.getElementById("message").value.trim();
-            if (receiver === "" || message === "") {
-                alert("Både mottaker og melding må fylles ut.");
-                return;
-            }
-            socket.emit("private_message", { "from": username, "to": receiver, "message": message });
-            document.getElementById("chat").innerHTML += `<p><b>Til ${receiver}:</b> ${message}</p>`;
-        }
-
-        socket.on("message", function(data) {
-            document.getElementById("chat").innerHTML += `<p><b>Fra ${data.from}:</b> ${data.message}</p>`;
-        });
-
-        function sendImage() {
-            var receiver = document.getElementById("receiver").value.trim();
-            var file = document.getElementById("imageInput").files[0];
-
-            if (!file) {
-                alert("Velg et bilde før du sender.");
-                return;
-            }
-
-            var reader = new FileReader();
-            reader.onload = function(event) {
-                var base64Image = event.target.result.split(",")[1]; // Fjern Base64-header
-                socket.emit("send_image", {
-                    "from": username,
-                    "to": receiver,
-                    "image": base64Image
+            console.log("Session started for:", username);
+            
+            // Send message function
+            window.sendMessage = function() {
+                var receiver = document.getElementById("receiver").value.trim();
+                var message = document.getElementById("message").value.trim();
+                
+                if (receiver === "" || message === "") {
+                    alert("Both recipient and message are required.");
+                    return;
+                }
+                
+                socket.emit("private_message", { 
+                    "from": username, 
+                    "to": receiver, 
+                    "message": message 
                 });
+                
+                // Add message to chat display
+                document.getElementById("chat").innerHTML += `
+                    <div class="message-sent">
+                        <div class="message-header">
+                            <span class="message-to">To ${receiver}</span>
+                            <span class="message-time">${new Date().toLocaleTimeString()}</span>
+                        </div>
+                        <div class="message-body">${message}</div>
+                    </div>
+                `;
+                
+                // Clear message input
+                document.getElementById("message").value = "";
             };
+            
+            // Receive message event
+            socket.on("message", function(data) {
+                document.getElementById("chat").innerHTML += `
+                    <div class="message-received">
+                        <div class="message-header">
+                            <span class="message-from">From ${data.from}</span>
+                            <span class="message-time">${new Date().toLocaleTimeString()}</span>
+                        </div>
+                        <div class="message-body">${data.message}</div>
+                    </div>
+                `;
+            });
+            
+            // Send image function
+            window.sendImage = function() {
+                var receiver = document.getElementById("receiver").value.trim();
+                var file = document.getElementById("imageInput").files[0];
+                
+                if (!receiver) {
+                    alert("Please specify a recipient.");
+                    return;
+                }
 
-            reader.readAsDataURL(file);
+                if (!file) {
+                    alert("Please select an image to send.");
+                    return;
+                }
+
+                var reader = new FileReader();
+                reader.onload = function(event) {
+                    var base64Image = event.target.result.split(",")[1]; // Remove Base64 header
+                    socket.emit("send_image", {
+                        "from": username,
+                        "to": receiver,
+                        "image": base64Image
+                    });
+                    
+                    // Add sent image to chat display
+                    document.getElementById("chat").innerHTML += `
+                        <div class="message-sent">
+                            <div class="message-header">
+                                <span class="message-to">To ${receiver}</span>
+                                <span class="message-time">${new Date().toLocaleTimeString()}</span>
+                            </div>
+                            <div class="message-body">
+                                <img src="${event.target.result}" style="max-width: 200px;">
+                            </div>
+                        </div>
+                    `;
+                };
+
+                reader.readAsDataURL(file);
+            };
+            
+            // Receive image event
+            socket.on("receive_image", function(data) {
+                document.getElementById("chat").innerHTML += `
+                    <div class="message-received">
+                        <div class="message-header">
+                            <span class="message-from">From ${data.from}</span>
+                            <span class="message-time">${new Date().toLocaleTimeString()}</span>
+                        </div>
+                        <div class="message-body">
+                            <img src="${data.image_url}" style="max-width: 200px;">
+                        </div>
+                    </div>
+                `;
+            });
         }
-
-        socket.on("receive_image", function(data) {
-            document.getElementById("chat").innerHTML += 
-                `<p><b>Fra ${data.from}:</b> <br><img src="${data.image_url}" style="max-width: 200px;"></p>`;
-        });
     </script>
 </body>
 </html>
