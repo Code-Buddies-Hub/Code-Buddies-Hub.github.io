@@ -245,7 +245,7 @@ body {
     padding: 4rem;
     border-radius: 20px;
     text-align: center;
-    margin: 5rem 0;
+    margin: 5rem auto;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
     position: relative;
     overflow: hidden;
