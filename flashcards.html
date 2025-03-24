@@ -93,6 +93,15 @@
         let currentIndex = -1;
         let showingAnswer = false;
         const flashcardElement = document.getElementById('flashcard');
+        const preloadedImages = {};
+
+        function preloadImages() {
+            flashcards.forEach(card => {
+                const img = new Image();
+                img.src = card.image;
+                preloadedImages[card.image] = img;
+            });
+        }
 
         function getRandomIndex() {
             let newIndex;
@@ -105,7 +114,8 @@
         function showFlashcard() {
             currentIndex = getRandomIndex();
             showingAnswer = false;
-            flashcardElement.innerHTML = `<img src="${flashcards[currentIndex].image}" alt="Flashcard">`;
+            flashcardElement.innerHTML = '';
+            flashcardElement.appendChild(preloadedImages[flashcards[currentIndex].image]);
         }
 
         function toggleFlashcard() {
@@ -126,6 +136,7 @@
 
         flashcardElement.addEventListener('click', toggleFlashcard);
         
+        preloadImages();
         showFlashcard();
     </script>
 </body>
