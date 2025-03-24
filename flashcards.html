@@ -58,86 +58,95 @@
     <div class="flashcard" id="flashcard"></div>
     
     <script>
-        const flashcards = [
-            { image: 'Images/Ahånd.png', answer: 'A' },
-            { image: 'Images/Bhånd.png', answer: 'B' },
-            { image: 'images/Chånd.png', answer: 'C' },
-            { image: 'Images/Dhånd.png', answer: 'D' },
-            { image: 'Images/Ehånd.png', answer: 'E' },
-            { image: 'images/Fhånd.png', answer: 'F' },
-            { image: 'Images/Ghånd.png', answer: 'G' },
-            { image: 'Images/Hhånd.png', answer: 'H' },
-            { image: 'images/Ihånd.png', answer: 'I' },
-            { image: 'Images/Jhånd.png', answer: 'J' },
-            { image: 'Images/Khånd.png', answer: 'K' },
-            { image: 'images/Lhånd.png', answer: 'L' },
-            { image: 'Images/Mhånd.png', answer: 'M' },
-            { image: 'Images/Nhånd.png', answer: 'N' },
-            { image: 'images/Ohånd.png', answer: 'O' },
-            { image: 'Images/Phånd.png', answer: 'P' },
-            { image: 'Images/Qhånd.png', answer: 'Q' },
-            { image: 'images/Rhånd.png', answer: 'R' },
-            { image: 'Images/Shånd.png', answer: 'S' },
-            { image: 'Images/Thånd.png', answer: 'T' },
-            { image: 'images/Uhånd.png', answer: 'U' },
-            { image: 'Images/Vhånd.png', answer: 'V' },
-            { image: 'Images/Whånd.png', answer: 'W' },
-            { image: 'images/Xhånd.png', answer: 'X' },
-            { image: 'Images/Yhånd.png', answer: 'Y' },
-            { image: 'Images/Zhånd.png', answer: 'Z' },
-            { image: 'images/Æhånd.png', answer: 'Æ' },
-            { image: 'Images/Øhånd.png', answer: 'Ø' },
-            { image: 'Images/Åhånd.png', answer: 'Å' }
-        ];
+      const flashcards = [
+    { image: 'Images/Ahånd.png', answer: 'A' },
+    { image: 'Images/Bhånd.png', answer: 'B' },
+    { image: 'images/Chånd.png', answer: 'C' },
+    { image: 'Images/Dhånd.png', answer: 'D' },
+    { image: 'Images/Ehånd.png', answer: 'E' },
+    { image: 'images/Fhånd.png', answer: 'F' },
+    { image: 'Images/Ghånd.png', answer: 'G' },
+    { image: 'Images/Hhånd.png', answer: 'H' },
+    { image: 'images/Ihånd.png', answer: 'I' },
+    { image: 'Images/Jhånd.png', answer: 'J' },
+    { image: 'Images/Khånd.png', answer: 'K' },
+    { image: 'images/Lhånd.png', answer: 'L' },
+    { image: 'Images/Mhånd.png', answer: 'M' },
+    { image: 'Images/Nhånd.png', answer: 'N' },
+    { image: 'images/Ohånd.png', answer: 'O' },
+    { image: 'Images/Phånd.png', answer: 'P' },
+    { image: 'Images/Qhånd.png', answer: 'Q' },
+    { image: 'images/Rhånd.png', answer: 'R' },
+    { image: 'Images/Shånd.png', answer: 'S' },
+    { image: 'Images/Thånd.png', answer: 'T' },
+    { image: 'images/Uhånd.png', answer: 'U' },
+    { image: 'Images/Vhånd.png', answer: 'V' },
+    { image: 'Images/Whånd.png', answer: 'W' },
+    { image: 'images/Xhånd.png', answer: 'X' },
+    { image: 'Images/Yhånd.png', answer: 'Y' },
+    { image: 'Images/Zhånd.png', answer: 'Z' },
+    { image: 'images/Æhånd.png', answer: 'Æ' },
+    { image: 'Images/Øhånd.png', answer: 'Ø' },
+    { image: 'Images/Åhånd.png', answer: 'Å' }
+];
 
-        let currentIndex = -1;
-        let showingAnswer = false;
-        const flashcardElement = document.getElementById('flashcard');
-        const preloadedImages = {};
+let currentIndex = -1;
+let showingAnswer = false;
+const flashcardElement = document.getElementById('flashcard');
+const preloadedImages = {};
 
-        function preloadImages() {
-            flashcards.forEach(card => {
-                const img = new Image();
-                img.src = card.image;
-                preloadedImages[card.image] = img;
-            });
-        }
-
-        function getRandomIndex() {
-            let newIndex;
-            do {
-                newIndex = Math.floor(Math.random() * flashcards.length);
-            } while (newIndex === currentIndex);
-            return newIndex;
-        }
-
-        function showFlashcard() {
-            currentIndex = getRandomIndex();
-            showingAnswer = false;
-            flashcardElement.innerHTML = '';
-            flashcardElement.appendChild(preloadedImages[flashcards[currentIndex].image]);
-        }
-
-        function toggleFlashcard() {
-            if (showingAnswer) {
-                showFlashcard();
-            } else {
-                flashcardElement.innerHTML = `<p>${flashcards[currentIndex].answer}</p>`;
-                showingAnswer = true;
+function preloadImages(callback) {
+    let loadedCount = 0;
+    flashcards.forEach(card => {
+        const img = new Image();
+        img.src = card.image;
+        img.onload = () => {
+            loadedCount++;
+            if (loadedCount === flashcards.length) {
+                callback(); // Ensure all images are loaded before continuing
             }
-        }
+        };
+        img.onerror = () => console.error("Error loading image:", img.src);
+        preloadedImages[card.image] = img;
+    });
+}
 
-        document.addEventListener('keydown', (event) => {
-            if (event.code === 'Space') {
-                event.preventDefault();
-                toggleFlashcard();
-            }
-        });
+function getRandomIndex() {
+    let newIndex;
+    do {
+        newIndex = Math.floor(Math.random() * flashcards.length);
+    } while (newIndex === currentIndex);
+    return newIndex;
+}
 
-        flashcardElement.addEventListener('click', toggleFlashcard);
-        
-        preloadImages();
+function showFlashcard() {
+    currentIndex = getRandomIndex();
+    showingAnswer = false;
+    flashcardElement.innerHTML = '';
+    flashcardElement.appendChild(preloadedImages[flashcards[currentIndex].image]);
+}
+
+function toggleFlashcard() {
+    if (showingAnswer) {
         showFlashcard();
+    } else {
+        flashcardElement.innerHTML = `<p>${flashcards[currentIndex].answer}</p>`;
+        showingAnswer = true;
+    }
+}
+
+document.addEventListener('keydown', (event) => {
+    if (event.code === 'Space') {
+        event.preventDefault();
+        toggleFlashcard();
+    }
+});
+
+flashcardElement.addEventListener('click', toggleFlashcard);
+
+// Preload images and only start the app after all images are loaded
+preloadImages(() => showFlashcard());
+
     </script>
 </body>
 </html>
